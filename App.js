@@ -4,9 +4,10 @@ import { s } from "./app.style";
 import { Header } from "./components/Header/Header.jsx";
 import { CardTodo } from "./components/CardTodo/CardTodo.jsx"
 import {useState} from "react";
-
+import { TapBottomMenu } from "./components/TapeBottomMenu/TapBottomMenu.jsx"
 export default function App() { 
-   
+    const [ selectedTabName, setSelectedTabName ] = useState("all");
+
     const [todoList, setTodoList]= useState([
       {id: 1, title : "Sortir le chien", isCompleted: true },
       {id: 2, title : "Aller chez le garagiste", isCompleted: false },
@@ -56,7 +57,7 @@ export default function App() {
                   </SafeAreaView>  
             </SafeAreaProvider>
             <View style={s.footer}>
-                              <Text>Footer</Text>
+                  <TapBottomMenu selectedTabName = { selectedTabName } />
           </View>
           </>       
       );
