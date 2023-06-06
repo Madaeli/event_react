@@ -17,25 +17,26 @@ export default function App() {
       {id: 7, title : "Faire les courses", isCompleted: true },
       {id: 8, title : "Appeler le vétérinaire", isCompleted: true },
     ]);
-  function updateTodo(tode){
+    
+  function updateTodo(todo){
     const updateTodo = {
       ...todo,
       isCompleted: !todo.isCompleted
     };
+
     const indexToUpdate =todoList.findIndex(
         (todo)=> todo.id=== updateTodo.id 
     );
 
     const updateTodoList = [...todoList]
-    todoList[indexToUpdate]= updateTodo;
+    updateTodoList[indexToUpdate]= updateTodo;
     setTodoList(updateTodoList);
-      console.log(todo);
   }
 
   function renderTodoList(){
       return todoList.map((todo)=>( 
             <View style={s.cardItem} key={todo.id}> 
-                  <CardTodo onPress={updateTodo} todo={todo} />
+                  <CardTodo onPress ={updateTodo} todo={todo} />
             </View>));
     }
 
