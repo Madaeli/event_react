@@ -1,10 +1,12 @@
-import { Text,ScrollView, View} from "react-native";
+import { Text,ScrollView, View,Alert} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from  "react-native-safe-area-context";
 import { s } from "./app.style";
 import { Header } from "./components/Header/Header.jsx";
 import { CardTodo } from "./components/CardTodo/CardTodo.jsx"
 import {useState} from "react";
 import { TapBottomMenu } from "./components/TapeBottomMenu/TapBottomMenu.jsx"
+import { ButtonAdd } from "./components/ButtonAdd/ButtonAdd.jsx"
+import Dialog from "react-native-dialog";
 export default function App() { 
     const [ selectedTabName, setSelectedTabName ] = useState("all");
 
@@ -18,6 +20,18 @@ export default function App() {
       {id: 7, title : "Faire les courses", isCompleted: true },
       {id: 8, title : "Appeler le vétérinaire", isCompleted: true },
     ]);
+
+  function getFilteredList(){
+    switch (selectedTabName){
+        case "all":
+          return todoList;
+        case "inProgress":
+          return todoList.filter((todo)=> !todo.isCompleted);
+        case "done":
+          return todoList.filter((todo)=> todo.isCompleted);
+
+    }
+  }
     
   function updateTodo(todo){
     const updateTodo = {
@@ -33,14 +47,30 @@ export default function App() {
     updateTodoList[indexToUpdate]= updateTodo;
     setTodoList(updateTodoList);
   }
-
+  function deleteTodo(todoDelete){
+    Alert.alert("Suppression", "Supprimer cette tâche ?",[
+      {
+        text: "Suppression",
+        style: "destructive",
+        onPress: () => {
+          setTodoList(todoList.filter(todo=> todo.id !==todoDelete.id)) 
+        },
+      },
+      {
+        text: "Annuler",
+        style: "cancel",
+      }
+    ])
+  }
   function renderTodoList(){
-      return todoList.map((todo)=>( 
+      return getFilteredList().map((todo)=>( 
             <View style={s.cardItem} key={todo.id}> 
-                  <CardTodo onPress ={updateTodo} todo={todo} />
+                  <CardTodo onLongPress={deleteTodo} onPress ={updateTodo} todo={todo} />
             </View>));
     }
-
+  function addTodo(){
+    
+  }
     return(
           <>
             <SafeAreaProvider>
@@ -52,16 +82,19 @@ export default function App() {
                           <ScrollView> 
                             {renderTodoList()} 
                           </ScrollView>
-                         
-                        </View>                 
+                        </View> 
+                        <ButtonAdd  />           
                   </SafeAreaView>  
             </SafeAreaProvider>
-            <View style={s.footer}>
+       
                   <TapBottomMenu
+                      todoList={todoList}
                      onPress= {setSelectedTabName} 
                      selectedTabName = { selectedTabName } 
-                  />
-          </View>
+            />
+          <Dialog.Container>
+                    
+          </Dialog.Container>  
           </>       
       );
 }
