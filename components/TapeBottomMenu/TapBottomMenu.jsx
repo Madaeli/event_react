@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View} from "react-native";
 import {s} from "./TapBottomMenu.syle";
-export function TapBottomMenu(selectedTabName) {
+export function TapBottomMenu( {selectedTabName, onPress} ) {
   function getTextStyle(tabName){
     return{
       fontWeight: "bold",
@@ -10,13 +10,13 @@ export function TapBottomMenu(selectedTabName) {
 
   return(
     <View style={s.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=> onPress("all") }>
         <Text style= {getTextStyle("all")} >All</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
+      </TouchableOpacity >
+      <TouchableOpacity onPress={()=> onPress("all") }>
         <Text style= {getTextStyle("inProgress")}>In progress</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=> onPress("all") }>
         <Text style= {getTextStyle("done")}>Done</Text>
       </TouchableOpacity>
     </View>

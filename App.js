@@ -57,7 +57,10 @@ export default function App() {
                   </SafeAreaView>  
             </SafeAreaProvider>
             <View style={s.footer}>
-                  <TapBottomMenu selectedTabName = { selectedTabName } />
+                  <TapBottomMenu
+                     onPress= {setSelectedTabName} 
+                     selectedTabName = { selectedTabName } 
+                  />
           </View>
           </>       
       );
