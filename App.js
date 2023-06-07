@@ -7,20 +7,53 @@ import {useState} from "react";
 import { TapBottomMenu } from "./components/TapeBottomMenu/TapBottomMenu.jsx"
 import { ButtonAdd } from "./components/ButtonAdd/ButtonAdd.jsx"
 import Dialog from "react-native-dialog";
+import uuid from "react-native-uuid";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+let isFirstRender = true;
+let isLoadUpdate = false;
 export default function App() { 
     const [ selectedTabName, setSelectedTabName ] = useState("all");
+    const [ isAddDialogVisible, setIsAddDialogVisible] = useState(false);
+    const [todoList, setTodoList]= useState([]);
+    const [inputValue, setInputValue]= useState("");
 
-    const [todoList, setTodoList]= useState([
-      {id: 1, title : "Sortir le chien", isCompleted: true },
-      {id: 2, title : "Aller chez le garagiste", isCompleted: false },
-      {id: 3, title : "Faire les courses", isCompleted: true },
-      {id: 4, title : "Appeler le vétérinaire", isCompleted: true },
-      {id: 5, title : "Sortir le chien", isCompleted: true },
-      {id: 6, title : "Aller chez le garagiste", isCompleted: false },
-      {id: 7, title : "Faire les courses", isCompleted: true },
-      {id: 8, title : "Appeler le vétérinaire", isCompleted: true },
-    ]);
+  useEffect(()=>{
+    loadTodoList()
+  },[ ]);
 
+  useEffect(()=>{
+    if(isLoadUpdate){
+      isLoadUpdate= false;
+    }else{
+        if (!isFirstRender){
+          saveTodoList()
+        }else{
+          isFirstRender=false;
+        }
+   } 
+  },[todoList]);
+  
+  async function saveTodoList(){
+    try{
+      await AsyncStorage.setItem("@todolist",JSON.stringify(todoList));
+    }catch(err){
+      alert("Errour" + err);
+    }
+  }
+
+  async function loadTodoList(){
+    try{
+      const stringifiedTodoList= await AsyncStorage.getItem("@todolist");
+      if (stringifiedTodoList !==null ){
+        const parsedTodoList = JSON.parse(stringifiedTodoList);
+        isLoadUpdate= true;
+        setTodoList(parsedTodoList);
+      }
+    }catch(err){
+      alert("Errour" + err);
+    }
+  }
   function getFilteredList(){
     switch (selectedTabName){
         case "all":
@@ -69,7 +102,16 @@ export default function App() {
             </View>));
     }
   function addTodo(){
-    
+    const newTodo = {
+      id: uuid.v4(),
+      title : inputValue,
+      isCompleted: false,
+    };
+    setTodoList([...todoList, newTodo]);
+    setIsAddDialogVisible(false);
+  }
+  function showAddDialog(){
+    setIsAddDialogVisible(true);
   }
     return(
           <>
@@ -83,17 +125,31 @@ export default function App() {
                             {renderTodoList()} 
                           </ScrollView>
                         </View> 
-                        <ButtonAdd  />           
+                        <ButtonAdd onPress={showAddDialog} />           
                   </SafeAreaView>  
             </SafeAreaProvider>
        
                   <TapBottomMenu
                       todoList={todoList}
-                     onPress= {setSelectedTabName} 
-                     selectedTabName = { selectedTabName } 
+                      onPress= {setSelectedTabName} 
+                      selectedTabName = { selectedTabName } 
             />
-          <Dialog.Container>
-                    
+          <Dialog.Container visible={isAddDialogVisible} onBackdropPress={()=>setIsAddDialogVisible(false)}>
+             <Dialog.Title>
+                Créer une tâche
+             </Dialog.Title>
+             <Dialog.Description>
+                Choisir un nom pour la nouvelle tâche 
+             </Dialog.Description>
+             <Dialog.Input onChangeText={(setInputValue)} />
+             
+             <Dialog.Button 
+              disabled={inputValue.trim().length=== 0}
+                label="Créer" 
+                onPress={addTodo} 
+              />
+
+                   
           </Dialog.Container>  
           </>       
       );
