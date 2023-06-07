@@ -18,7 +18,7 @@ export default function App() {
     const [todoList, setTodoList]= useState([]);
     const [inputValue, setInputValue]= useState("");
 
-  useEffect(()=>{
+  useEffect (()=>{
     loadTodoList()
   },[]);
 
@@ -31,8 +31,8 @@ export default function App() {
         }else{
           isFirstRender=false;
         }
-   } 
-  },[todoList]);
+    } 
+  }, [todoList] );
   
   async function saveTodoList(){
     try{
