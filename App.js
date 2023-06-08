@@ -32,7 +32,7 @@ export default function App() {
           isFirstRender=false;
         }
     } 
-  }, [todoList] );
+  }, [ todoList] );
   
   async function saveTodoList(){
     try{
