@@ -116,7 +116,7 @@ export default function App() {
   }
     return(
           <>
-            <StatusBar backgroundColor= "#C8C8C8" />
+            <StatusBar backgroundColor= "#0000FF" />
             <SafeAreaProvider>
                   <SafeAreaView style = { s.app }>
                         <View style={s.header}>
