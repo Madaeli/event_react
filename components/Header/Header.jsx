@@ -5,7 +5,7 @@ export function Header() {
   return(
     <View style ={s.vw}>
       <Image  style ={s.img} source= {headerLog} resizeMode ={ "contain" } />
-      <Text style={s.subtitle}> Liste des tâche      </Text>
+      <Text style={s.subtitle}> Task list</Text>
     </View>
   );
    
