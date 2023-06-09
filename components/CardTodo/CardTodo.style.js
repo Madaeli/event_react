@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const s = StyleSheet.create({
   card: {
-    margin:10,
     backgroundColor: "white",
     flexDirection: "row",
     height: 115,
@@ -10,6 +9,7 @@ export const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal:20,
+    marginHorizontal: 20,
     shadowColor: "#000",
     shadowOffset: {
 	    width: 0,

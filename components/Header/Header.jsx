@@ -1,12 +1,12 @@
 import { s } from "./Header.style";
-import { Text, Image} from "react-native";
+import { Text, Image, View} from "react-native";
 import headerLog from "../../assets/logo.png";
 export function Header() {
   return(
-    <>
+    <View style ={s.vw}>
       <Image  style ={s.img} source= {headerLog} resizeMode ={ "contain" } />
-      <Text style={s.subtitle}> Liste des tâches       </Text>
-    </>
+      <Text style={s.subtitle}> Liste des tâche      </Text>
+    </View>
   );
    
   

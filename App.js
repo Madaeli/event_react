@@ -7,6 +7,7 @@ import {useState} from "react";
 import { TapBottomMenu } from "./components/TapeBottomMenu/TapBottomMenu.jsx"
 import { ButtonAdd } from "./components/ButtonAdd/ButtonAdd.jsx"
 import Dialog from "react-native-dialog";
+import { StatusBar } from 'expo-status-bar';
 import uuid from "react-native-uuid";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
@@ -18,7 +19,7 @@ export default function App() {
     const [todoList, setTodoList]= useState([]);
     const [inputValue, setInputValue]= useState("");
 
-  useEffect (()=>{
+  useEffect(()=>{
     loadTodoList()
   },[]);
 
@@ -31,8 +32,8 @@ export default function App() {
         }else{
           isFirstRender=false;
         }
-    } 
-  }, [ todoList] );
+   } 
+  },[ todoList]);
   
   async function saveTodoList(){
     try{
@@ -115,6 +116,7 @@ export default function App() {
   }
     return(
           <>
+            <StatusBar backgroundColor="#FF0000" />
             <SafeAreaProvider>
                   <SafeAreaView style = { s.app }>
                         <View style={s.header}>
